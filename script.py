@@ -170,29 +170,28 @@ def listMenuValidate():
   running = True 
 
   while running:
-    testInput = input('>>> ')
+    testInput = int(input('>>> '))
+    print('')
     
     try:
       if testInput in range(1,7,1):
         if testInput == 1:
-          showTracks()
+          showInitial( showTracks, 'tracks')
         elif testInput == 2:
-          showArtists()
+          showInitial( showArtists, 'artists')
         elif testInput == 3:
-          showAlbums()
+          showInitial( showAlbums, 'albums')
         elif testInput == 4:
-          showGenres()
+          showInitial( showGenres, 'genres')
         elif testInput == 5:
-          showAll()
+          showInitial( showAll, 'all fields')
         elif testInput == 6:
           mainMenu()
         running = False
       else:
-        print('')
         print('Enter a valid number')
         amendMenuValidate()
     except ValueError:
-      print('')
       print('Please enter a number')
       listMenuValidate()
 
@@ -225,27 +224,76 @@ def searchAll():
   print('search all ')
 
 
+def showInitial( destination, caption ):
+  print('')
+  print(f"Showing all {caption}")
+  print('')
+  destination() 
+
 def showTracks():
-  print('Show tracks')
+  print('Tracks')
+  print('-------')
+  new = []
+  for item in playlist:
+    new.append(item['track'] )
+  toPrint = sorted(new, key=str.lower)
+  for i in toPrint:
+    print(i)
+  print('')
+  print(f"Returning to the list menu")
+  validateAnyInput( listMenu, 'list menu' )
 
 def showArtists():
-  print('Show artists')
+  print('Artist')
+  print('-------')
+  new = []
+  for item in playlist:
+    new.append(item['artist'] )
+  toPrint = sorted(new, key=str.lower)
+  for i in toPrint:
+    print(i)
+  print('')
+  print(f"Returning to the list menu")
+  validateAnyInput( listMenu, 'list menu' )
+
+def showAlbums():
+  print('Albums')
+  print('-------')
+  new = []
+  for item in playlist:
+    new.append(item['album'] )
+  toPrint = sorted(new, key=str.lower)
+  for i in toPrint:
+    print(i)
+  print('')
+  print(f"Returning to the list menu")
+  validateAnyInput( listMenu, 'list menu' )
+
+def showGenres():
+  print('Genres')
+  print('-------')
+  new = []
+  for item in playlist:
+    new.append(item['genre'] )
+  toPrint = sorted(new, key=str.lower)
+  for i in toPrint:
+    print(i)
+  print('')
+  print(f"Returning to the list menu")
+  validateAnyInput( listMenu, 'list menu' )
 
 def showAll():
-  print('Showing all entries')
-  print('')
   print('Track    ---     Artist     ---    Album     ---    Genre')
+  print('-------------------------------------------------------------')
   for item in playlist:
-    entry = item['track'] + ' --- ' + item['artist'] + ' --- ' + item['album'] + ' --- ' + item['genre']
-     # for key, value in item.items():
-      # print(entries.get('track'))
-    print(entry)
+    print(item['track'] + ' --- ' + item['artist'] + ' --- ' + item['album'] + ' --- ' + item['genre'])
   print('')
-  print('Returning to the main menu')
+  print(f"Returning to the list menu")
+  validateAnyInput( listMenu, 'list menu' )
+
+def validateAnyInput( move_to, name_of ):
   print('')
-  validateAnyInput( menu)
-      
-def validateAnyInput( move_to ):
+  print('Press any key to continue ')
   running = True
   
   while running: 
@@ -253,6 +301,9 @@ def validateAnyInput( move_to ):
 
     if len(testInput) > 0:
       move_to()
+      running = False
+    else:
+      validateAnyInput( move_to, name_of )
 
-showAll()
+listMenu()
 
