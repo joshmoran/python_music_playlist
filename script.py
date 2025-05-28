@@ -232,7 +232,27 @@ def showArtists():
   print('Show artists')
 
 def showAll():
-  print('Show all ')
+  print('Showing all entries')
+  print('')
+  print('Track    ---     Artist     ---    Album     ---    Genre')
+  for item in playlist:
+    entry = item['track'] + ' --- ' + item['artist'] + ' --- ' + item['album'] + ' --- ' + item['genre']
+     # for key, value in item.items():
+      # print(entries.get('track'))
+    print(entry)
+  print('')
+  print('Returning to the main menu')
+  print('')
+  validateAnyInput( menu)
+      
+def validateAnyInput( move_to ):
+  running = True
+  
+  while running: 
+    testInput = input('>>> ')
 
-mainMenu()
+    if len(testInput) > 0:
+      move_to()
+
+showAll()
 
