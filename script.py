@@ -131,13 +131,13 @@ def searchMenuValidate():
     try:
       if testInput in range(1,7,1):
         if testInput == 1:
-          searchTrack()
+          searchInitial( 'track' )
         elif testInput == 2:
-          searchArtist()
+          searchInitial( 'artist' )
         elif testInput == 3:
-          searchAlbum()
+          searchInitial( 'album' )
         elif testInput == 4:
-          searchGenre()
+          searchInitial( 'genre' )
         elif testInput == 5:
           searchAll()
         elif testInput == 6: 
@@ -201,11 +201,47 @@ def add():
 def remove():
   print('remove')
 
-
 def update():
   print('update')
 
+def searchInitial( byWhat ):
+  print('')
+  print('Please enter what you want to search for')
+  search(byWhat)
 
+def search( byWhat ):
+  running = True 
+  print('')
+  while running:
+    try: 
+      testInput = str(input('>>> '))
+
+      if len(testInput) > 2:
+        searchItems( byWhat, testInput)
+      else:
+        print('Please enter a sentance over 2 characters ')
+        search( byWhat )
+    except ValueError:
+      print('Enter a valkid fdniinsudfn')
+      search( byWhat )
+
+
+
+def searchItems( byWhat, searchFor ):
+  itemsFound = [] 
+  correct = False
+  lowered = searchFor.lower() 
+  print('')
+  for item in playlist:
+    itemField = item[ byWhat ].lower()
+    if lowered in itemField:
+      correct = True
+      print(item['track'] + ' --- ' + item['artist'] + ' --- ' + item['album'] + ' --- ' + item['genre'])
+  if not correct:
+    print('')
+    print('No items found ')
+  validateAnyInput(searchMenu, 'search menu')
+    
 def searchTrack():
   print('search treac')
 
@@ -305,5 +341,5 @@ def validateAnyInput( move_to, name_of ):
     else:
       validateAnyInput( move_to, name_of )
 
-listMenu()
+searchMenu()
 
