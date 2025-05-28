@@ -1,6 +1,7 @@
 import sys
 # Global variables 
 name = '' 
+addingTo = []
 playlist = [
   { 'artist': 'Psyconaut 4', 'album': 'Dipsoma', 'track': 'Personal Forest', 'genre': 'Depressive Black Metal'},
   { 'artist': 'Nyktalgia', 'album': 'Peisanthesis', 'track': 'Peisanthesis', 'genre': 'Black Metal'},
@@ -139,7 +140,7 @@ def searchMenuValidate():
         elif testInput == 4:
           searchInitial( 'genre' )
         elif testInput == 5:
-          searchAll()
+          searchInitial( 'all' )
         elif testInput == 6: 
           mainMenu()
         running = False
@@ -196,7 +197,59 @@ def listMenuValidate():
       listMenuValidate()
 
 def add():
-  print('add')
+  print('Add an item')
+  print('')
+  print('We will need these details:')
+  print('1. Track name')
+  print('2. Artist name')
+  print('3. Album name')
+  print('4. Genre')
+  print('')
+  addingMenu( 0, '' )
+
+
+def addingMenu( workingNo, item='' ):
+  
+  if item != '':
+    addingTo.append(item)
+
+  if workingNo == 0:
+    print('What is the track name')
+    entry = validateAdd( workingNo )
+    print(entry)
+  elif workingNo == 1:
+    print('What is the artists name')
+    validateAdd( workingNo )
+  elif workingNo == 2: 
+    print('What is the albums name')
+    validateAdd( workingNo )
+  elif workingNo == 3:
+    print('What is the genre')
+    validateAdd( workingNo )
+  elif workingNo == 4:
+    playlist.append( {
+      'artist': addingTo[0],
+      'album': addingTo[1],
+      'track': addingTo[2],
+      'genre': addingTo[3]
+    })
+    current = []
+    print('Successfully added to the playlist')
+    validateAnyInput( amendMenu, 'amend menu') 
+
+def validateAdd( workingNo ):
+  running = True
+  while running:
+
+    testInput = input('>>> ')
+    print('')
+
+    if len(testInput) > 2:
+      addingMenu(workingNo + 1 , testInput )
+      running = False
+    else:
+      print('Please enter a string longer than 2 characters')
+      validateAdd(workingNo)
 
 def remove():
   print('remove')
@@ -213,19 +266,16 @@ def search( byWhat ):
   running = True 
   print('')
   while running:
-    try: 
-      testInput = str(input('>>> '))
+    testInput = input('>>> ')
 
-      if len(testInput) > 2:
+    if len(testInput) > 2:
+      if byWhat != 'all':
         searchItems( byWhat, testInput)
-      else:
-        print('Please enter a sentance over 2 characters ')
-        search( byWhat )
-    except ValueError:
-      print('Enter a valkid fdniinsudfn')
+      else: 
+        searchAll( testInput )
+    else:
+      print('Please enter a sentence over 2 characters ')
       search( byWhat )
-
-
 
 def searchItems( byWhat, searchFor ):
   itemsFound = [] 
@@ -238,27 +288,27 @@ def searchItems( byWhat, searchFor ):
       correct = True
       print(item['track'] + ' --- ' + item['artist'] + ' --- ' + item['album'] + ' --- ' + item['genre'])
   if not correct:
-    print('')
     print('No items found ')
   validateAnyInput(searchMenu, 'search menu')
-    
-def searchTrack():
-  print('search treac')
 
+def searchAll( searchingFor ):
+  lowered = searchingFor.lower()
+  newList = []
 
-def searchArtist():
-  print('search artist')
-
-def searchAlbum():
-  print('search album')
-
-def searchGenre():
-  print('search genre')
-
-
-def searchAll(): 
-  print('search all ')
-
+  for item in playlist:
+    for key, value in item.items():
+      if lowered in value.lower():
+        newList.append( item['track'] + ' --- ' + item['artist'] + ' --- ' + item['album'] + ' --- ' + item['genre'])
+        break
+  if len(newList) > 0:
+    print('Track    ---     Artist     ---    Album     ---    Genre')
+    print('-------------------------------------------------------------')
+    for entry in newList:
+      print(entry)
+  else:
+    print('')
+    print('No items found')
+  validateAnyInput(searchMenu, 'search menu')
 
 def showInitial( destination, caption ):
   print('')
@@ -341,5 +391,5 @@ def validateAnyInput( move_to, name_of ):
     else:
       validateAnyInput( move_to, name_of )
 
-searchMenu()
+add()
 
